@@ -61,9 +61,9 @@ const lyricChangeReducer = (state = initialState.songsById, action) => {
   const songChangeReducer = (state = initialState.currentSongId, action) => {
     switch(action.type){
       case 'CHANGE_SONG':
-      return action.newSelectedSongId
+        return action.newSelectedSongId
       default:
-      return state;
+        return state;
     }
   }
 
@@ -137,7 +137,7 @@ const renderLyrics = () => {
       store.getState()
       .songsById[store.getState().currentSongId]
       .songArray[store.getState()
-          .songsById[getState().currentSongId]
+          .songsById[store.getState().currentSongId]
         .arrayPosition
       ]);
     document.getElementById('lyrics').appendChild(currentLine);
@@ -158,7 +158,7 @@ const renderSongs = () => {
     const h3 = document.createElement('h3');
     const em = document.createElement('em');
     const songTitle = document.createTextNode(song.title);
-    const songArtist = document.createTextNode('by ' + song.artist);
+    const songArtist = document.createTextNode(' by ' + song.artist);
     em.appendChild(songTitle);
     h3.appendChild(em);
     h3.appendChild(songArtist);
@@ -184,6 +184,14 @@ const userClick = () => {
   } else {
     store.dispatch({type: 'NEXT_LYRIC'});
   }
+}
+
+const selectSong = (newSongId) => {
+  let action = {
+    type: 'CHANGE_SONG',
+    newSelectedSongId: newSongId
+  }
+  store.dispatch(action);
 }
 
 // SUBSCRIBE TO REDUX STORE
