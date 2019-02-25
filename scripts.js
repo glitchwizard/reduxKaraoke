@@ -179,15 +179,25 @@ window.onload = function() {
 // CLICK LISTENER
 const userClick = () => {
   const currentState = store.getState();
-  if (currentState.arrayPosition === currentState.songLyricsArray.length - 1) {
-    store.dispatch({type: 'RESTART_SONG'});
+  if (store.getState().songsById[store.getState().currentSongId].arrayPosition === store.getState().songsById[store.getState().currentSongId].songArray.length - 1) {
+    store.dispatch({type: 'RESTART_SONG',
+                    currentSongId: store.getState().currentSongId});
   } else {
-    store.dispatch({type: 'NEXT_LYRIC'});
+    store.dispatch({type: 'NEXT_LYRIC',
+                    currentSongId: store.getState().currentSongId});
   }
 }
 
 const selectSong = (newSongId) => {
-  let action = {
+  let action;
+  if (store.getState().currentSongId) {
+    action = {
+      type: 'RESTART_SONG',
+      newSelectedSongId: newSongId
+    }
+    store.dispatch(action);
+  }
+  action = {
     type: 'CHANGE_SONG',
     newSelectedSongId: newSongId
   }
